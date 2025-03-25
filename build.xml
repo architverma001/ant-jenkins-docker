@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="AntProject" default="compile" basedir=".">
-    
+
+    <!-- Define source and build directories -->
     <property name="src.dir" value="src"/>
     <property name="build.dir" value="build"/>
+    <property name="dist.dir" value="dist"/>
 
+    <!-- Clean previous build -->
     <target name="clean">
         <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
     </target>
 
+    <!-- Compile Java files -->
     <target name="compile" depends="clean">
         <mkdir dir="${build.dir}"/>
         <javac srcdir="${src.dir}" destdir="${build.dir}"/>
     </target>
 
-    <target name="run" depends="compile">
-        <java classname="Main" fork="true">
-            <classpath>
-                <pathelement location="${build.dir}"/>
-            </classpath>
-        </java>
+    <!-- ✅ Add package target -->
+    <target name="package" depends="compile">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.dir}/app.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="Main"/>
+            </manifest>
+        </jar>
     </target>
+
 </project>
